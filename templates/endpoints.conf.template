@@ -1,0 +1,32 @@
+server {
+    listen ${NGINX_PORT};
+
+    index index.html index.htm index.nginx-debian.html;
+    root /var/www/;
+
+    server_name endpoints.my;
+
+    location ~* \.(?:css|js)$ {
+        try_files $uri =404;
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public";
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location ~ ^/(api/(.*)doc|api) {
+        location ~ ^/api/(.*)doc {
+            try_files $uri $uri/ /index.html;
+        }
+        location ~ ^/api {
+            if ($remote_addr != 0.0.0.0) {
+                rewrite ^/api/(.*) http://apim.my/api/$1 last;
+            }
+            try_files $uri $uri/ /index.html;
+        }
+    }
+}
+

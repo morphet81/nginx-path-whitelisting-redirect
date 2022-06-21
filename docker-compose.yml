@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  web:
+    image: nginx
+    volumes:
+    - ./templates:/etc/nginx/templates
+    - /Users/alexandre/development/docker-compose/nginx/file_system:/var/www
+    command: [nginx-debug, '-g', 'daemon off;']
+    ports:
+    - "80:80"
+    environment:
+    - NGINX_HOST=foobar.com
+    - NGINX_PORT=80

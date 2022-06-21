@@ -1,0 +1,13 @@
+server {
+    listen ${NGINX_PORT};
+
+    index index.html index.htm index.nginx-debian.html;
+    root /var/www/;
+
+    server_name apim.my;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
